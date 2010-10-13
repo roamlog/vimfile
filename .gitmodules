@@ -4,3 +4,6 @@
 [submodule "bundle/checksyntax"]
 	path = bundle/checksyntax
 	url = http://github.com/tomtom/checksyntax_vim.git
+[submodule "bundle/histwin"]
+	path = bundle/histwin
+	url = http://github.com/chrisbra/histwin.vim.git
