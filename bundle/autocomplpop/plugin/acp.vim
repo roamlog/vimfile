@@ -3,7 +3,7 @@
 "
 " GetLatestVimScripts: 1879 1 :AutoInstall: AutoComplPop
 "=============================================================================
-" LOAD GUARD {{{1
+" LOAD GUARD 
 
 try
   if !l9#guardScriptLoading(expand('<sfile>:p'), 702, 101, [])
@@ -14,9 +14,9 @@ catch /E117/
   finish
 endtry
 
-" }}}1
+" 
 "=============================================================================
-" FUNCTION: {{{1
+" FUNCTION: 
 
 "
 function s:makeDefaultBehavior()
@@ -114,9 +114,9 @@ function s:makeDefaultBehavior()
   return behavs
 endfunction
 
-" }}}1
+" 
 "=============================================================================
-" INITIALIZATION {{{1
+" INITIALIZATION 
 
 "-----------------------------------------------------------------------------
 call l9#defineVariableDefault('g:acp_enableAtStartup', 1)
@@ -159,6 +159,6 @@ if g:acp_enableAtStartup
 endif
 "-----------------------------------------------------------------------------
 
-" }}}1
+" 
 "=============================================================================
 " vim: set fdm=marker:
