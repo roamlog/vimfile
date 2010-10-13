@@ -180,6 +180,10 @@ set go-=T
 set foldenable
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 
+" 启用 pathogen.vim 插件
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+
 " =====================
 " 配置多语言环境
 " 默认为 UTF-8 编码
@@ -504,9 +508,6 @@ nmap <C-i><C-i> :VimwikiTabGoHome<cr>
 
 "修改 vmirc 后自动生效
 autocmd! bufwritepost .vimrc source ~/.vimrc
-
-"启用 pathogen.vim 插件
-call pathogen#runtime_append_all_bundles()
 
 " Rainbows!
 nmap <leader>R :RainbowParenthesesToggle<CR>
