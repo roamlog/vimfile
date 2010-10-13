@@ -6,7 +6,6 @@ DOMMouseScroll
 Date
 Error
 EvalError
-Function
 Image
 Infinity
 LN10
@@ -250,6 +249,7 @@ frames
 fromCharCode
 fromElement
 function
+Function
 galleryImg
 getAttention
 getAttribute

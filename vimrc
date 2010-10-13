@@ -253,6 +253,9 @@ if has("autocmd")
     " strip all trailing whitespace in the current file
     nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
+    "clear search
+    nnoremap <leader><space> :noh<cr>
+
     " fold tag
     nnoremap <leader>ft Vatzf
 
