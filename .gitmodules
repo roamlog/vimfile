@@ -10,3 +10,6 @@
 [submodule "bundle/hypergit"]
 	path = bundle/hypergit
 	url = http://github.com/c9s/hypergit.vim.git
+[submodule "bundle/ruby"]
+	path = bundle/ruby
+	url = http://github.com/vim-ruby/vim-ruby.git
