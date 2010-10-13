@@ -4,7 +4,7 @@
 "
 "   author: roamlog<roamlog@gmail.com>
 "  website: http://roamlog.info
-"     date: 2010-03-15
+"     date: 2010-10-13
 
 if v:version < 700
   echoerr 'This _vimrc requires Vim 7 or later.'
@@ -487,8 +487,6 @@ let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
 set guitablabel=%t
-
-map <leader>t :FuzzyFinderTextMate<CR>
 
 " VimWiki 配置
 let g:vimwiki_list = [{"path": "~/Wiki/", "path_html": "~/Sites/wiki/", "auto_export": 1}]
