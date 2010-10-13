@@ -7,3 +7,6 @@
 [submodule "bundle/histwin"]
 	path = bundle/histwin
 	url = http://github.com/chrisbra/histwin.vim.git
+[submodule "bundle/hypergit"]
+	path = bundle/hypergit
+	url = http://github.com/c9s/hypergit.vim.git
