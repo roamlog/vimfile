@@ -139,7 +139,7 @@ set noswapfile
 set nowritebackup
 
 " 自动完成
-set complete=.,w,b,k,t,i
+set complete=.,w,b,u,t,i,k
 set completeopt=longest,menu
 
 " 代码折叠
@@ -483,6 +483,7 @@ autocmd FileType Javascript nmap <F3> :call JavascriptLint()<cr>
 autocmd FileType html,xhtml,css nmap <F3> :make<cr><cr>:copen<cr>
 
 " 自动完成设置 禁止在插入模式移动的时候出现 Complete 提示
+let g:acp_completeOption='.,w,b,u,t,i,k'
 let g:acp_mappingDriven = 1
 let g:acp_behaviorSnipmateLength = 1
 
