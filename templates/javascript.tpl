@@ -2,9 +2,9 @@
 /**
  * filename.js
  *
- * @author mingcheng<i.feelinglucky#gmail.com>
+ * @author roamlog<roamlog#gmail.com>
  * @date
- * @link   http://www.gracecode.com/
+ * @link   http://roamlog.info/
  */
 
 #cursor#
