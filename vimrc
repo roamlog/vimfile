@@ -116,7 +116,7 @@ set showcmd
 "set relativenumber
 
 " 撤销
-set undofile
+"set undofile
 
 " 缩进
 set autoindent
