@@ -335,7 +335,7 @@ if has('gui_running')
     set cursorline
 
     " 编辑器配色
-    colorscheme slate
+    colorscheme slate 
 
     if has("gui_macvim")
         set guifont=YaHei\ Consolas\ Hybrid:h16
