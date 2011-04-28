@@ -1,8 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/Users/roamlog/.vim'
 let g:netrw_dirhist_2='/Users/roamlog/.zsh_history'
 let g:netrw_dirhist_3='/Users/roamlog/IdeaProjects/yx'
 let g:netrw_dirhist_4='/opt/nginx'
 let g:netrw_dirhist_5='/Users/roamlog/.rvm/gems/ruby-1.9.2-p136/bin'
 let g:netrw_dirhist_6='/private/etc/ppp'
+let g:netrw_dirhist_7='/Users/roamlog/IdeaProjects/yx/.git/hooks'
+let g:netrw_dirhist_8='/Users/roamlog/.oh-my-zsh/custom'
