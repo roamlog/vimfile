@@ -1,7 +1,9 @@
 :VWS	vimwiki.txt	/*:VWS*
 :Vimwiki2HTML	vimwiki.txt	/*:Vimwiki2HTML*
+:Vimwiki2HTMLBrowse	vimwiki.txt	/*:Vimwiki2HTMLBrowse*
 :VimwikiAll2HTML	vimwiki.txt	/*:VimwikiAll2HTML*
 :VimwikiDeleteLink	vimwiki.txt	/*:VimwikiDeleteLink*
+:VimwikiDiaryIndex	vimwiki.txt	/*:VimwikiDiaryIndex*
 :VimwikiDiaryNextDay	vimwiki.txt	/*:VimwikiDiaryNextDay*
 :VimwikiDiaryPrevDay	vimwiki.txt	/*:VimwikiDiaryPrevDay*
 :VimwikiFollowLink	vimwiki.txt	/*:VimwikiFollowLink*
@@ -20,6 +22,7 @@
 :VimwikiTable	vimwiki.txt	/*:VimwikiTable*
 :VimwikiTableMoveColumnLeft	vimwiki.txt	/*:VimwikiTableMoveColumnLeft*
 :VimwikiTableMoveColumnRight	vimwiki.txt	/*:VimwikiTableMoveColumnRight*
+:VimwikiTabnewLink	vimwiki.txt	/*:VimwikiTabnewLink*
 :VimwikiToggleListItem	vimwiki.txt	/*:VimwikiToggleListItem*
 :VimwikiUISelect	vimwiki.txt	/*:VimwikiUISelect*
 :VimwikiVSplitLink	vimwiki.txt	/*:VimwikiVSplitLink*
@@ -50,6 +53,7 @@ g:vimwiki_table_auto_fmt	vimwiki.txt	/*g:vimwiki_table_auto_fmt*
 g:vimwiki_upper	vimwiki.txt	/*g:vimwiki_upper*
 g:vimwiki_use_calendar	vimwiki.txt	/*g:vimwiki_use_calendar*
 g:vimwiki_use_mouse	vimwiki.txt	/*g:vimwiki_use_mouse*
+g:vimwiki_user_htmls	vimwiki.txt	/*g:vimwiki_user_htmls*
 g:vimwiki_valid_html_tags	vimwiki.txt	/*g:vimwiki_valid_html_tags*
 g:vimwiki_w32_dir_enc	vimwiki.txt	/*g:vimwiki_w32_dir_enc*
 vimwiki	vimwiki.txt	/*vimwiki*
@@ -76,14 +80,15 @@ vimwiki-option-diary_index	vimwiki.txt	/*vimwiki-option-diary_index*
 vimwiki-option-diary_link_count	vimwiki.txt	/*vimwiki-option-diary_link_count*
 vimwiki-option-diary_rel_path	vimwiki.txt	/*vimwiki-option-diary_rel_path*
 vimwiki-option-ext	vimwiki.txt	/*vimwiki-option-ext*
-vimwiki-option-html_footer	vimwiki.txt	/*vimwiki-option-html_footer*
-vimwiki-option-html_header	vimwiki.txt	/*vimwiki-option-html_header*
 vimwiki-option-index	vimwiki.txt	/*vimwiki-option-index*
 vimwiki-option-maxhi	vimwiki.txt	/*vimwiki-option-maxhi*
 vimwiki-option-nested_syntaxes	vimwiki.txt	/*vimwiki-option-nested_syntaxes*
 vimwiki-option-path	vimwiki.txt	/*vimwiki-option-path*
 vimwiki-option-path_html	vimwiki.txt	/*vimwiki-option-path_html*
 vimwiki-option-syntax	vimwiki.txt	/*vimwiki-option-syntax*
+vimwiki-option-template_default	vimwiki.txt	/*vimwiki-option-template_default*
+vimwiki-option-template_ext	vimwiki.txt	/*vimwiki-option-template_ext*
+vimwiki-option-template_path	vimwiki.txt	/*vimwiki-option-template_path*
 vimwiki-options	vimwiki.txt	/*vimwiki-options*
 vimwiki-placeholders	vimwiki.txt	/*vimwiki-placeholders*
 vimwiki-prerequisites	vimwiki.txt	/*vimwiki-prerequisites*
@@ -91,6 +96,7 @@ vimwiki-syntax	vimwiki.txt	/*vimwiki-syntax*
 vimwiki-syntax-blockquotes	vimwiki.txt	/*vimwiki-syntax-blockquotes*
 vimwiki-syntax-comments	vimwiki.txt	/*vimwiki-syntax-comments*
 vimwiki-syntax-headers	vimwiki.txt	/*vimwiki-syntax-headers*
+vimwiki-syntax-hr	vimwiki.txt	/*vimwiki-syntax-hr*
 vimwiki-syntax-links	vimwiki.txt	/*vimwiki-syntax-links*
 vimwiki-syntax-lists	vimwiki.txt	/*vimwiki-syntax-lists*
 vimwiki-syntax-paragraphs	vimwiki.txt	/*vimwiki-syntax-paragraphs*
@@ -100,6 +106,7 @@ vimwiki-syntax-typefaces	vimwiki.txt	/*vimwiki-syntax-typefaces*
 vimwiki-table-mappings	vimwiki.txt	/*vimwiki-table-mappings*
 vimwiki-table-of-contents	vimwiki.txt	/*vimwiki-table-of-contents*
 vimwiki-tables	vimwiki.txt	/*vimwiki-tables*
+vimwiki-template	vimwiki.txt	/*vimwiki-template*
 vimwiki-temporary-wiki	vimwiki.txt	/*vimwiki-temporary-wiki*
 vimwiki-text-objects	vimwiki.txt	/*vimwiki-text-objects*
 vimwiki-title	vimwiki.txt	/*vimwiki-title*
@@ -112,10 +119,14 @@ vimwiki_<A-Right>	vimwiki.txt	/*vimwiki_<A-Right>*
 vimwiki_<Backspace>	vimwiki.txt	/*vimwiki_<Backspace>*
 vimwiki_<C-CR>	vimwiki.txt	/*vimwiki_<C-CR>*
 vimwiki_<C-Down>	vimwiki.txt	/*vimwiki_<C-Down>*
+vimwiki_<C-S-CR>	vimwiki.txt	/*vimwiki_<C-S-CR>*
 vimwiki_<C-Space>	vimwiki.txt	/*vimwiki_<C-Space>*
 vimwiki_<C-Up>	vimwiki.txt	/*vimwiki_<C-Up>*
 vimwiki_<CR>	vimwiki.txt	/*vimwiki_<CR>*
+vimwiki_<D-CR>	vimwiki.txt	/*vimwiki_<D-CR>*
 vimwiki_<Leader>wd	vimwiki.txt	/*vimwiki_<Leader>wd*
+vimwiki_<Leader>wh	vimwiki.txt	/*vimwiki_<Leader>wh*
+vimwiki_<Leader>whh	vimwiki.txt	/*vimwiki_<Leader>whh*
 vimwiki_<Leader>wr	vimwiki.txt	/*vimwiki_<Leader>wr*
 vimwiki_<S-CR>	vimwiki.txt	/*vimwiki_<S-CR>*
 vimwiki_<S-Tab>	vimwiki.txt	/*vimwiki_<S-Tab>*

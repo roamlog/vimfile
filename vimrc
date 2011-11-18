@@ -60,6 +60,10 @@ func! VisualSearch(direction) range
     let @" = l:saved_reg
 endfunc
 
+"Basically you press * or # to search for the current selection !! Really useful
+vnoremap <silent> * :call VisualSearch('f')<CR>
+vnoremap <silent> # :call VisualSearch('b')<CR>
+
 " =========
 " 环境配置
 " =========
@@ -79,9 +83,20 @@ set showtabline=2
 set noerrorbells
 set novisualbell
 set t_vb= "close visual bell
+set mat=2
+" 减少刷新和重画
+set lz
+
+" set magic on
+set magic
 
 " 修改 leader 键的快捷键
 let mapleader = ","
+let g:mapleader = ","
+
+" 快速保存
+nmap <leader>w :w!<cr>
+nmap <leader>f :find<cr>
 
 " 行号和标尺
 set number
@@ -148,6 +163,9 @@ set foldmethod=manual
 " 保证语法高亮
 syntax on
 
+" should not break clone
+set wildignore+=.git
+
 " 中文帮助
 set helplang=cn
 
@@ -179,10 +197,6 @@ set go-=T
 " 用空格键来开关折叠
 set foldenable
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-
-" 启用 pathogen.vim 插件
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
 
 " =====================
 " 配置多语言环境
@@ -281,7 +295,7 @@ if has("autocmd")
     au FileType php,c,python,java,javascript exe AutoClose()
 
     " Auto Check Syntax
-    au BufWritePost,FileWritePost *.js,*.php call CheckSyntax(1)
+    "au BufWritePost,FileWritePost *.js,*.php call CheckSyntax(1)
 
     " JavaScript 语法高亮
     au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
@@ -394,6 +408,12 @@ map td :tabnew <cr>
 map te :tabedit
 map tc :tabclose<cr>
 
+" Map space to / (search)
+map <space> /
+
+"Switch to current dir
+map <leader>cd :cd %:p:h<cr>
+
 " 插件快捷键
 nmap ,n :NERDTree<CR>
 nmap bf :BufExplorer<cr>
@@ -471,16 +491,6 @@ inoremap <C-Tab> <C-O><C-W>W
 " =========
 " 插件
 " =========
-" Javascript in CheckSyntax
-if has('win32')
-    let g:checksyntax_cmd_javascript  = 'jsl -conf '.shellescape($VIM . '\vimfiles\plugin\jsl.conf')
-else
-    let g:checksyntax_cmd_javascript  = 'jsl -conf ~/.vim/plugin/jsl.conf'
-endif
-let g:checksyntax_cmd_javascript .= ' -nofilelisting -nocontext -nosummary -nologo -process'
-
-" js lint检验
-autocmd FileType Javascript nmap <F3> :call JavascriptLint()<cr>
 
 " html, css校验
 autocmd FileType html,xhtml,css nmap <F3> :make<cr><cr>:copen<cr>
@@ -511,6 +521,7 @@ nmap <C-i><C-i> :VimwikiTabGoHome<cr>
 " ===========
 
 "修改 vmirc 后自动生效
+map <leader>s :source ~/.vimrc<cr>
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " Rainbows!
@@ -529,3 +540,98 @@ if has("unix")
 else
 	map ,c :cd <C-R>=expand("\%:p:h") . "\\" <CR>
 endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle init
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let root = '~/.vim/bundle'
+if !isdirectory(expand(root).'/vundle')
+  exec '!git clone http://github.com/gmarik/vundle.git '.root.'/vundle'
+endif
+
+filetype off                   " required!
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" from github
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'tpope/vim-fugitive'
+Bundle 'tomtom/checksyntax_vim'
+Bundle 'chrisbra/histwin.vim'
+Bundle 'c9s/hypergit.vim'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'msanders/snipmate.vim'
+
+" rails
+Bundle 'tpope/vim-rails'
+Bundle 'taq/vim-rspec'
+Bundle "kchmck/vim-coffee-script"
+
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+" Haml
+Bundle "tpope/vim-haml"
+
+" Tag List
+Bundle "vim-scripts/taglist.vim"
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Right_Window=1
+
+" NerdTree
+Bundle "wycats/nerdtree"
+let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
+noremap <Leader>[ :NERDTreeToggle<CR>
+
+" NerdCommenter
+Bundle "ddollar/nerdcommenter"
+
+Bundle "hallettj/jslint.vim"
+nmap <leader>jc :JSLintToggle<cr>
+let g:JSLintHighlightErrorLine=0
+
+Bundle 'Shougo/neocomplcache'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" from git repo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'git://git.wincent.com/command-t.git'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" from vim script Sites
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Bundle 'FuzzyFinder'
+Bundle 'L9'
+Bundle "fugitive.vim"
+Bundle "bufexplorer.zip"
+Bundle 'genutils'
+Bundle 'rainbow_parentheses.vim'
+Bundle 'vimwiki'
+Bundle 'LargeFile'
+Bundle 'FavMenu.vim'
+Bundle 'calendar.vim'
+Bundle 'FencView.vim'
+Bundle 'mru.vim'
+Bundle 'QuickTemplate'
+Bundle 'vimcdoc'
+Bundle 'jsbeautify'
+Bundle 'JavaScript-Indent'
+
+" (HT|X)ml tool
+Bundle "ragtag.vim"
+
+" VimCommander
+Bundle "vimcommander"
+noremap <silent> <F11> :cal VimCommanderToggle()<CR> 
+
+filetype plugin indent on     " required! 
