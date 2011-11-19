@@ -601,6 +601,10 @@ nmap <leader>jc :JSLintToggle<cr>
 let g:JSLintHighlightErrorLine=0
 
 Bundle 'Shougo/neocomplcache'
+let g:neocomplcache_enable_at_startup = 1 
+
+Bundle 'ervandew/supertab'
+let g:SuperTabDefaultCompletionType = "context"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " from git repo
