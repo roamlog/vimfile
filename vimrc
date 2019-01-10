@@ -3,81 +3,34 @@
 " roamlog 的 VIM 配置文件
 "
 "   author: roamlog<roamlog@gmail.com>
-"  website: http://roamlog.info
-"     date: 2010-10-13
-
-if v:version < 700
-  echoerr 'This _vimrc requires Vim 7 or later.'
-  quit
-endif
+"  website: http://readful.com
+"     date: 2016-06-25
 
 " 获得当前目录
 function! CurrectDir()
 	return substitute(getcwd(), "", "", "g")
 endfunction
 
-" 跳过页头注释，到首行实际代码
-func! GotoFirstEffectiveLine()
-  let l:c = 0
-  while l:c<line("$") && (
-        \ getline(l:c) =~ '^\s*$'
-        \ || synIDattr(synID(l:c, 1, 0), "name") =~ ".*Comment.*"
-        \ || synIDattr(synID(l:c, 1, 0), "name") =~ ".*PreProc$"
-        \ )
-    let l:c = l:c+1
-  endwhile
-  exe "normal ".l:c."Gz\<CR>"
-endf
-
-" 返回当前时间
-func! GetTimeInfo()
-    return strftime('%Y-%m-%d %A %H:%M:%S')
-endfunction
-
-" 全选
-func! SelectAll()
-    let s:current = line('.')
-    exe "norm gg" . (&slm == "" ? "VG" : "gH\<C-O>G")
-endfunc
-
-" From an idea by Michael Naumann
-func! VisualSearch(direction) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'b'
-        execute "normal ?" . l:pattern . "^M"
-    elseif a:direction == 'gv'
-        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
-    elseif a:direction == 'f'
-        execute "normal /" . l:pattern . "^M"
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunc
-
-"Basically you press * or # to search for the current selection !! Really useful
-vnoremap <silent> * :call VisualSearch('f')<CR>
-vnoremap <silent> # :call VisualSearch('b')<CR>
-
 " =========
 " 环境配置
 " =========
+
 " 保留历史记录
-set history=400
+set history=500
 
-" 行控制
-set nocompatible  "不兼容 vi
-set whichwrap+=<,>,h,l "光标移动
-set textwidth=80 "自动换行
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
 
-" 标签页
-set tabpagemax=8
-set showtabline=2
+" 修改 leader 键的快捷键
+let mapleader = ","
+let g:mapleader = ","
+
+" Fast saving
+nmap <leader>w :w!<cr>
+
+" 不兼容 vi
+set nocompatible
 
 " 控制台响铃
 set noerrorbells
@@ -90,29 +43,25 @@ set lz
 " set magic on
 set magic
 
-" 修改 leader 键的快捷键
-let mapleader = ","
-let g:mapleader = ","
-
-" 快速保存
-nmap <leader>w :w!<cr>
-nmap <leader>f :find<cr>
-
-" 行号和标尺
+" 行号
 set number
-set ruler
-set rulerformat=%15(%c%V\ %p%%%)
+
+" 打开状态栏标尺
+set ruler 
 
 " 命令行于状态行
 set ch=1
-set statusline=\ [File]\ %F%m%r%h%y[%{&fileformat},%{&fileencoding}]\ %w\ \ [PWD]\ %r%{CurrectDir()}%h\ %=\ [Line]%l/%L\ %=\[%P]
+
+"set statusline=\ %F%m%r%h%y[%{&fileformat},%{&fileencoding}]\ %w\ \ \ CWD:\ "%r%{CurrectDir()}%h\ %=\ Line:\ %l/%L
+
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l/%L
+
 set ls=2 " 始终显示状态行
 
 " 搜索
-set hlsearch
-set showmatch
-set mat=2
-set incsearch
+set hlsearch " 高亮搜索
+set showmatch " 显示相对应的括号
+set incsearch " 实时搜索
 
 " 默认添加/g
 set gdefault
@@ -127,21 +76,16 @@ set softtabstop=4
 " 状态栏显示目前所执行的指令
 set showcmd
 
-" 相对行号
-"set relativenumber
-
-" 撤销
-"set undofile
-
 " 缩进
 set autoindent
 set smartindent
 
-" 自动重新读入
-set autoread
-
 " 插入模式下使用 <BS>、<Del> <C-W> <C-U>
 set backspace=indent,eol,start
+set whichwrap+=<,>,h,l
+
+" 自动重新读入
+set autoread
 
 " 设定在任何模式下鼠标都可用
 set mouse=a
@@ -162,9 +106,6 @@ set foldmethod=manual
 
 " 保证语法高亮
 syntax on
-
-" should not break clone
-set wildignore+=.git
 
 " 中文帮助
 set helplang=cn
@@ -188,8 +129,8 @@ set fillchars=vert:\ ,stl:\ ,stlnc:\
 " 光标移动到buffer的顶部和底部时保持3行距离
 set scrolloff=3
 
-" 自动格式化
-set formatoptions=tcrqn
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
 
 " 去除工具栏
 set go-=T
@@ -197,6 +138,9 @@ set go-=T
 " 用空格键来开关折叠
 set foldenable
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+
+" Add a bit extra margin to the left
+set foldcolumn=1
 
 " =====================
 " 配置多语言环境
@@ -224,117 +168,6 @@ else
 endif
 
 " =========
-" AutoCmd
-" =========
-if has("autocmd")
-    filetype plugin indent on
-    
-    " 括号自动补全
-    func! AutoClose()
-        :inoremap ( ()<ESC>i
-        :inoremap " ""<ESC>i
-        :inoremap ' ''<ESC>i
-        :inoremap { {}<ESC>i
-        :inoremap [ []<ESC>i
-        :inoremap ) <c-r>=ClosePair(')')<CR>
-        :inoremap } <c-r>=ClosePair('}')<CR>
-        :inoremap ] <c-r>=ClosePair(']')<CR>
-    endf
-
-    function! ClosePair(char)
-        if getline('.')[col('.') - 1] == a:char
-            return "\<Right>"
-        else
-            return a:char
-        endif
-    endf
-
-    augroup vimrcEx
-        au!
-        autocmd FileType text setlocal textwidth=80
-        autocmd BufReadPost *
-                    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-                    \   exe "normal g`\"" |
-                    \ endif
-    augroup END
-
-    " save on losing focus
-    au FocusLost * :wa
-    
-    " make ; do the same thing as :
-    nnoremap ; :
-
-    " strip all trailing whitespace in the current file
-    nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
-
-    "clear search
-    nnoremap <leader><space> :noh<cr>
-
-    " fold tag
-    nnoremap <leader>ft Vatzf
-
-    " reselect the text that was just pasted
-    nnoremap <leader>v V`]
-
-    " quickly open up my vimrc file
-    nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
-
-    " return to normal mode by jj
-    inoremap jj <ESC>
-    
-    " split windows
-    nnoremap <leader>w <C-w>v<C-w>l
-
-    " move around from splits
-    nnoremap <C-h> <C-w>h
-    nnoremap <C-j> <C-w>j
-    nnoremap <C-k> <C-w>k
-    nnoremap <C-l> <C-w>l
-    
-    "auto close for PHP and Javascript script
-    au FileType php,c,python,java,javascript exe AutoClose()
-
-    " Auto Check Syntax
-    "au BufWritePost,FileWritePost *.js,*.php call CheckSyntax(1)
-
-    " JavaScript 语法高亮
-    au FileType html,javascript let g:javascript_enable_domhtmlcss = 1
-
-    " 格式化 JavaScript 文件
-    "au FileType javascript map <f12> :call g:Jsbeautify()<cr>
-    nnoremap <silent> <leader>js :call g:Jsbeautify()<cr>
-    
-    au FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    
-    " 增加 ActionScript 语法支持
-    au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.as setf actionscript 
-
-    " 增加 Objective-C 语法支持
-    au BufNewFile,BufRead,BufEnter,WinEnter,FileType *.m,*.h setf objc
-    
-    " 给各语言文件添加 Dict
-    if has('win32')
-        au FileType php setlocal dict+=$VIM/vimfiles/dict/php_funclist.dict
-        au FileType css setlocal dict+=$VIM/vimfiles/dict/css.dict
-        au FileType javascript setlocal dict+=$VIM/vimfiles/dict/javascript.dict
-    else
-        au FileType php setlocal dict+=~/.vim/dict/php_funclist.dict
-        au FileType css setlocal dict+=~/.vim/dict/css.dict
-        au FileType javascript setlocal dict+=~/.vim/dict/javascript.dict
-    endif
-
-    " 自动最大化窗口
-    if has('gui_running')
-        if has("win32")
-            au GUIEnter * simalt ~x
-        "elseif has("unix")
-            "au GUIEnter * winpos 0 0
-            "set lines=999 columns=999
-        endif
-    endif
-endif
-
-" =========
 " 图形界面
 " =========
 if has('gui_running')
@@ -349,7 +182,8 @@ if has('gui_running')
     set cursorline
 
     " 编辑器配色
-    colorscheme slate 
+    set background=light
+    colorscheme solarized
 
     if has("gui_macvim")
         set guifont=YaHei\ Consolas\ Hybrid:h16
@@ -395,42 +229,22 @@ if has('gui_running')
         " 自动切换到文件当前目录
         set autochdir
     endif
+else
+    set background=light
+    colorscheme slate
 endif
 
 " =========
 " 快捷键
 " =========
 
-" 标签相关的快捷键
-map tn :tabnext<cr>
-map tp :tabprevious<cr>
-map td :tabnew <cr>
-map te :tabedit
-map tc :tabclose<cr>
-
-" Map space to / (search)
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
+map <c-space> ?
 
-"Switch to current dir
-map <leader>cd :cd %:p:h<cr>
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-" 插件快捷键
-nmap ,n :NERDTree<CR>
-nmap bf :BufExplorer<cr>
-
-" 开启 hypergit.vim 
-nmap <leader>g :ToggleGitMenu<cr>
-
-" 新建 XHTML 、PHP、Javascript 文件的快捷键
-nmap <C-c><C-h> :NewQuickTemplateTab xhtml<cr>
-nmap <C-c><C-p> :NewQuickTemplateTab php<cr>
-nmap <C-c><C-j> :NewQuickTemplateTab javascript<cr>
-nmap <C-c><C-c> :NewQuickTemplateTab css<cr>
-nmap <Leader>ca :Calendar<cr>
-
-" 直接看代码
-nmap <C-c><C-f> :call GotoFirstEffectiveLine()<cr>
-            
 " 按下 Q 不进入 Ex 模式，而是退出
 nmap Q :x<cr
 
@@ -458,184 +272,246 @@ imap <M-u> <Esc>wd$i
 " 删除光标处的单词
 imap <M-w> <Esc>ebdei
 
-" 插入模式按 Ctrl + D(ate) 插入当前时间
-imap <f2> <C-r>=GetTimeInfo()<cr>
-
-" 让命令行模式下也能使用 bash 的一些快捷键
-cmap <c-a> <home>
-cmap <c-e> <end>
-cnoremap <c-b> <left>
-cnoremap <c-d> <del>
-cnoremap <c-f> <right>
-cnoremap <c-n> <down>
-cnoremap <c-p> <up>
-
-cnoremap <esc><c-b> <s-left>
-cnoremap <esc><c-f> <s-right>
-
 " 映射光标控制
 imap <M-h> <Left>
 imap <M-j> <Down>
 imap <M-k> <Up>
 imap <M-l> <Right>
 
-" 开关 tags 窗口
-map <M-t> :TlistToggle<CR>
-imap <M-t> <Esc><A-t>i
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-"用c-q一个快捷键切换窗口及把窗口扩大
-map <C-W> <C-w>_
-nnoremap <C-Tab> <C-W>W
-inoremap <C-Tab> <C-O><C-W>W
+map j gj
+map k gk
 
-" =========
-" 插件
-" =========
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
 
-" html, css校验
-autocmd FileType html,xhtml,css nmap <F3> :make<cr><cr>:copen<cr>
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
 
-" 自动完成设置 禁止在插入模式移动的时候出现 Complete 提示
-let g:acp_completeOption='.,w,b,u,t,i,k'
-let g:acp_mappingDriven = 1
-let g:acp_behaviorSnipmateLength = 1
+" Close the current buffer
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
 
-compiler ruby         " Enable compiler support for ruby
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
-set guitablabel=%t
+" Close all the buffers
+map <leader>ba :bufdo bd<cr>
 
-" VimWiki 配置
-let g:vimwiki_list = [{"path": "~/Wiki/", "path_html": "~/Sites/wiki/", "auto_export": 1}]
-let g:vimwiki_auto_checkbox = 0
-if has('win32')
-    let g:vimwiki_list = [{"path": "d:/Documents/My Dropbox/Vimwiki/", 
-        \ "path_html": "D:/Documents/My Dropbox/Vimwiki/public_html", "auto_export": 1}]
-    let g:vimwiki_w32_dir_enc = 'cp936'
+map <leader>l :bnext<cr>
+map <leader>h :bprevious<cr>
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext 
+
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Remap VIM 0 to first non-blank character
+map 0 ^
+
+" Move a line of text using ALT+[jk] or Command+[jk] on mac
+nmap <M-j> mz:m+<cr>`z
+nmap <M-k> mz:m-2<cr>`z
+vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
+if has("mac") || has("macunix")
+  nmap <D-j> <M-j>
+  nmap <D-k> <M-k>
+  vmap <D-j> <M-j>
+  vmap <D-k> <M-k>
 endif
-nmap <C-i><C-i> :VimwikiTabGoHome<cr>
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+" Quickly open a buffer for scribble
+map <leader>q :e ~/buffer<cr>
+
+" Quickly open a markdown buffer for scribble
+map <leader>x :e ~/buffer.md<cr>
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+inoremap jj <esc>
 
 " ===========
 " 其它
 " ===========
 
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+" Remember info about open buffers on close
+set viminfo^=%
+
 "修改 vmirc 后自动生效
 map <leader>s :source ~/.vimrc<cr>
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
-" Rainbows!
-nmap <leader>R :RainbowParenthesesToggle<CR>
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
 
-"输入,e命令时,后面跟上当前目录结果
-if has("unix")
-	map ,e :e <C-R>=expand("\%:p:h") . "/" <CR>
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ag \"" . l:pattern . "\" " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+    return ''
+endfunction
+
+" Don't close window, when deleting a buffer
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+function! ToggleBG()
+    let s:tbg = &background
+    " Inversion
+    if s:tbg == "dark"
+        set background=light
+        colorscheme solarized
+    else
+        set background=dark
+        colorscheme slate
+    endif
+endfunction
+
+noremap <leader>bg :call ToggleBG()<CR>
+
+" ===========
+" 其它
+" ===========
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'rking/ag.vim'
+Plugin 'yegappan/mru'
+Plugin 'bufexplorer.zip'
+Plugin 'gmarik/sudo-gui.vim'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
+Plugin 'mbbill/undotree'
+
+call vundle#end()
+
+""""""""""""""""""""""""""""""
+" => bufExplorer plugin
+""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+let g:bufExplorerFindActive=1
+let g:bufExplorerSortBy='name'
+map <leader>b :BufExplorer<cr>
+
+""""""""""""""""""""""""""""""
+" => MRU plugin
+""""""""""""""""""""""""""""""
+let MRU_Max_Entries = 400
+map <leader>f :MRU<CR>
+
+""""""""""""""""""""""""""""""
+" => CTRL-P
+""""""""""""""""""""""""""""""
+let g:ctrlp_working_path_mode = 'ra' 
+
+let g:ctrlp_map = '<c-f>'
+map <leader>j :CtrlP<cr>
+map <c-b> :CtrlPBuffer<cr>
+
+let g:ctrlp_max_height = 20
+
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+if executable('ag')
+    let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+elseif executable('ack-grep')
+    let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+elseif executable('ack')
+    let s:ctrlp_fallback = 'ack %s --nocolor -f'
 else
-	map ,e :e <C-R>=expand("\%:p:h") . "\\" <CR>
-endif
-	
-"输入,c命令时,后面跟上当前目录结果
-if has("unix")
-	map ,c :cd <C-R>=expand("\%:p:h") . "/" <CR>
-else
-	map ,c :cd <C-R>=expand("\%:p:h") . "\\" <CR>
+    let s:ctrlp_fallback = 'find %s -type f'
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vundle init
+" => Nerd Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let root = '~/.vim/bundle'
-if !isdirectory(expand(root).'/vundle')
-  exec '!git clone http://github.com/gmarik/vundle.git '.root.'/vundle'
-endif
-
-filetype off                   " required!
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
+let NERDTreeShowHidden=0
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeWinSize=35
+map <leader>n :NERDTreeToggle<cr>
+map <leader>nt :NERDTreeFind<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plugin configuration
+" => Undotree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" from github
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'tpope/vim-fugitive'
-Bundle 'tomtom/checksyntax_vim'
-Bundle 'chrisbra/histwin.vim'
-Bundle 'c9s/hypergit.vim'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'msanders/snipmate.vim'
-
-" rails
-Bundle 'tpope/vim-rails'
-Bundle 'taq/vim-rspec'
-Bundle "kchmck/vim-coffee-script"
-
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-
-" Haml
-Bundle "tpope/vim-haml"
-
-" Tag List
-Bundle "vim-scripts/taglist.vim"
-let Tlist_Ctags_Cmd='/usr/bin/ctags'
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_Use_Right_Window=1
-
-" NerdTree
-Bundle "wycats/nerdtree"
-let NERDTreeIgnore=['\.pyc$', '\.rbc$', '\~$']
-noremap <Leader>[ :NERDTreeToggle<CR>
-
-" NerdCommenter
-Bundle "ddollar/nerdcommenter"
-
-Bundle "hallettj/jslint.vim"
-nmap <leader>jc :JSLintToggle<cr>
-let g:JSLintHighlightErrorLine=0
-
-Bundle 'Shougo/neocomplcache'
-let g:neocomplcache_enable_at_startup = 1 
-
-Bundle 'ervandew/supertab'
-let g:SuperTabDefaultCompletionType = "context"
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" from git repo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'git://git.wincent.com/command-t.git'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" from vim script Sites
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'FuzzyFinder'
-Bundle 'L9'
-Bundle "fugitive.vim"
-Bundle "bufexplorer.zip"
-Bundle 'genutils'
-Bundle 'rainbow_parentheses.vim'
-Bundle 'vimwiki'
-Bundle 'LargeFile'
-Bundle 'FavMenu.vim'
-Bundle 'calendar.vim'
-Bundle 'FencView.vim'
-Bundle 'mru.vim'
-Bundle 'QuickTemplate'
-Bundle 'vimcdoc'
-Bundle 'jsbeautify'
-Bundle 'JavaScript-Indent'
-
-" (HT|X)ml tool
-Bundle "ragtag.vim"
-
-" VimCommander
-Bundle "vimcommander"
-noremap <silent> <F11> :cal VimCommanderToggle()<CR> 
-
-filetype plugin indent on     " required! 
+nnoremap <leader>u :UndotreeToggle<cr>
